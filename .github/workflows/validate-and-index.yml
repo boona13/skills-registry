@@ -1,0 +1,96 @@
+name: Validate & Index Skills
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+
+jobs:
+  validate:
+    name: Validate Skill Files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate SKILL.md files
+        run: |
+          errors=0
+          for skill_dir in skills/*/; do
+            skill_file="${skill_dir}SKILL.md"
+            skill_name=$(basename "$skill_dir")
+
+            if [ ! -f "$skill_file" ]; then
+              echo "::error::${skill_dir} is missing SKILL.md"
+              errors=$((errors + 1))
+              continue
+            fi
+
+            # Check for frontmatter
+            if ! head -1 "$skill_file" | grep -q "^---"; then
+              echo "::error::${skill_file} is missing YAML frontmatter (must start with ---)"
+              errors=$((errors + 1))
+              continue
+            fi
+
+            # Check required fields
+            frontmatter=$(sed -n '/^---$/,/^---$/p' "$skill_file" | sed '1d;$d')
+
+            if ! echo "$frontmatter" | grep -q "^name:"; then
+              echo "::error::${skill_file} is missing required field: name"
+              errors=$((errors + 1))
+            fi
+
+            if ! echo "$frontmatter" | grep -q "^description:"; then
+              echo "::error::${skill_file} is missing required field: description"
+              errors=$((errors + 1))
+            fi
+
+            if ! echo "$frontmatter" | grep -q "^triggers:"; then
+              echo "::error::${skill_file} is missing required field: triggers"
+              errors=$((errors + 1))
+            fi
+
+            echo "OK: ${skill_name}"
+          done
+
+          if [ $errors -gt 0 ]; then
+            echo "::error::${errors} validation error(s) found"
+            exit 1
+          fi
+
+          echo "All skills validated successfully"
+
+  rebuild-index:
+    name: Rebuild index.json
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild index.json
+        run: python scripts/build-index.py
+
+      - name: Commit updated index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.json
+          git diff --cached --quiet || git commit -m "chore: rebuild index.json [skip ci]"
+          git push
