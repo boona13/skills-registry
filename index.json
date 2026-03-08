@@ -803,6 +803,19 @@
       "installs": 0,
       "rating": 0.0,
       "updated_at": "2026-03-08"
+    },
+    {
+      "name": "pomodoro-timer",
+      "description": "Pomodoro technique timer — set focused work sessions with break reminders",
+      "author": "community-user",
+      "version": "1.0.0",
+      "tags": ["productivity", "timer", "focus"],
+      "triggers": ["pomodoro", "focus timer", "work session", "take a break", "25 minutes"],
+      "tools": ["shell_exec", "notify"],
+      "requires": {},
+      "installs": 0,
+      "rating": 0.0,
+      "updated_at": "2026-03-08"
     }
   ]
 }
