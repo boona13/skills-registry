@@ -565,28 +565,6 @@
       "updated_at": "2026-03-08"
     },
     {
-      "name": "pomodoro-timer",
-      "description": "Pomodoro technique timer — set focused work sessions with break reminders",
-      "author": "boona13",
-      "version": "1.0.0",
-      "tags": [],
-      "triggers": [
-        "pomodoro",
-        "focus timer",
-        "work session",
-        "take a break",
-        "25 minutes"
-      ],
-      "tools": [
-        "shell_exec",
-        "notify"
-      ],
-      "requires": {},
-      "installs": 0,
-      "rating": 0.0,
-      "updated_at": "2026-03-08"
-    },
-    {
       "name": "researcher",
       "description": "Deep research assistant for URLs, articles, papers, GitHub repos, and multi-source knowledge gathering",
       "author": "boona13",
