@@ -6,7 +6,7 @@ The public skill registry for [Ghost](https://github.com/boona13/ghost-agent). B
 
 A Ghost skill is a single `SKILL.md` file with YAML frontmatter and markdown instructions. Skills teach Ghost how to handle specific tasks — from managing your email to trading stocks to automating browsers.
 
-When clipboard content matches a skill's triggers, Ghost injects the skill's instructions into its system prompt, giving it specialized knowledge for that task.
+When your message or task matches a skill's triggers, Ghost injects that skill's instructions into its system prompt, giving it specialized knowledge for that task.
 
 ## Browse Skills
 
