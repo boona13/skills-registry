@@ -1,6 +1,6 @@
 # GhostHub — Skill Registry for Ghost Agent
 
-The public skill registry for [Ghost](https://github.com/boona13/ghost-agent). Browse, search, and install community skills directly from Ghost's dashboard.
+The public skill registry for [Ghost](https://github.com/boona13/ghost). Browse, search, and install community skills directly from Ghost's dashboard.
 
 ## What is a Skill?
 
